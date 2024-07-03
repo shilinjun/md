@@ -1045,3 +1045,215 @@ Qt工具
 Qt工具（见表3-10）在所有支持的平台上都可以 使用，用于帮助应用程序的开发和设计。
 
 <img src="./image/QT/image-20240628154745992.png" alt="image-20240628154745992" style="zoom:80%;" />
+
+
+
+# 第4章：常用界面软件设计
+
+
+
+## 4.1 字符串与输入和输出
+
+
+
+### 4.1.1 字符串与数值之间的转换
+
+**QLabel** 用于显示字符串
+
+**QLineEdit**  用于显示和输入字符串
+
+<img src="./image/QT/image-20240703141523617.png" alt="image-20240703141523617" style="zoom:110%;" />
+
+QString类从字符串转换为整数的函数有：
+
+```c++
+int toInt(bool *ok = Q_NULLPTR, int base = 10) const
+long toLong (bool *ok = Q_NULLPTR, int base = 10) const
+short toShort (bool *ok = Q_NULLPTR, int base = 10) const
+uint toUInt (bool *ok = Q_NULLPTR, int base = 10) const
+ulong toULong (bool *ok = Q_NULLPTR, int base = 10) const
+```
+
+这些函数如果不设置参数，缺省表示从十进制表 示的字符串转换为整数；若指定整数基参数，还可以直接将二进制、十六进制字符串转换为整数。
+
+
+
+QString将字符串转换为浮点数的函数有：
+
+```c++
+double toDouble(bool *ok = Q_NULLPTR) const
+float toFloat (bool *ok = Q_NULLPTR) const
+```
+
+
+
+将一个整数转换为不同进制的字符串，可以使用 QString的函数**setNum()**或静态函数**number()**
+
+```c++
+Qstring &setNum (int n, int base = 10)
+QString number (int n, int base = 10)
+```
+
+其中n是待转换的整数，base是使用的进制，缺省 为十进制，也可以指定为十六进制和二进制。、
+
+
+
+### 4.1.2 QString的常用功能
+
+- **append()和prepend()**
+
+  append()在字符串的后面添加字符串，prepend() 在字符串的前面添加字符串，如：
+
+  ```c++
+  QString str1="卖", str2="拐";
+  QString str3=str1;
+  str1.append(str2); //str1="卖拐"
+  str3.prepend(str2); //str3="拐卖"
+  ```
+
+- **toUpper()和toLower()**
+
+  toUpper()将字符串内的字母全部转换为大写形 式，toLower()将字母全部转换为小写形式，如：
+
+  ```c++
+  QString str1="Hello, World", str2;
+  str2=str1.toUpper(); //str2="HELLO,WORLD"
+  str2=str1.toLower(); //str2="hello, world"
+  ```
+
+- **count()、size()和length()**
+
+  count()、size()和length()都返回字符串的字符 个数，这3个函数是相同的，但是要注意，字符串中如 果有汉字，一个汉字算一个字符。
+
+  ```c++
+  QString str1="NI好"
+  N=str1.count() //N=3
+  N=str1.size() //N=3
+  N=str1.length() //N=3
+  ```
+
+- **trimmed()和simplified()**
+
+  trimmed()去掉字符串首尾的空格，simplified() 不仅去掉首尾的空格，中间连续的空格也用一个空格 替换。
+
+  ```c++
+  QString str1=" Are you OK? ", str2;
+  str2=str1.trimmed(); //str1="Are you OK? "
+  str2=str1.simplified(); //str1="Are you OK? "
+  ```
+
+- **indexOf ()和lastIndexOf ()**
+
+  indexOf()函数的原型为：
+
+  ```c++
+  int indexOf (const QString &str, int from = 0,
+  Qt::CaseSensitivity cs = Qt::CaseSensitive) const
+  ```
+
+  其功能是在自身字符串内查找参数字符串str出现 的位置，参数from是开始查找的位置， Qt::CaseSensitivity cs参数指定是否区分大小写。
+
+   `lastIndexOf()`函数则是查找某个字符串最后出现 的位置。
+
+  ```c++
+  QString str1="G:\Qt5Book\QT5.9Study\qw.cpp";
+  N=str1.indexOf("5.9"); // N=13
+  N=str1.lastIndexOf("\\"); //N=21
+  ```
+
+- **isNull()和isEmpty()**
+
+  两个函数都判读字符串是否为空，但是稍有差 别。如果一个空字符串，只有“\0” ，isNull()返回 false，而isEmpty()返回true；
+
+  只有未赋值的字符 串，isNull()才返回true。
+
+  ```c++
+  QString str1, str2="";
+  N=str1.isNull(); // N=true 未赋值字符串变量
+  N=str2.isNull(); // N=false 只有"\0"的字符串，也不是Null
+  N=str1.isEmpty(); // N=true
+  N=str2.isEmpty(); // N=true
+  ```
+
+- **contains()**
+
+  判断字符串内是否包含某个字符串，可指定是否区分大小写。
+
+  ```c++
+  QString str1="G:\Qt5Book\QT5.9Study\qw.cpp";
+  N=str1. contains (".cpp", Qt::CaseInsensitive);
+  // N=true，不区分大小写
+  N=str1. contains (".CPP", Qt::CaseSensitive);
+  // N=false，区分大小写
+  ```
+
+- **endsWith()和startsWith()**
+
+  startsWith ()判断是否以某个字符串开头， endsWith()判断是否以某个字符串结束。
+
+  ```c++
+  QString str1="G:\Qt5Book\QT5.9Study\qw.cpp";
+  N=str1. endsWith(".cpp", Qt::CaseInsensitive);
+  // N=true，不区分大小写
+  N=str1. endsWith(".CPP", Qt::CaseSensitive);
+  // N=false，区分大小写
+  N=str1. startsWith("g: ");
+  // N=true，缺省为不区分大小写
+  ```
+
+- **left()和right()**
+
+  left表示从字符串中取左边多少个字符，right表 示从字符串中取右边多少个字符。注意，一个汉字被 当作一个字符。
+
+  ```c++
+  QString str2, str1="学生姓名，男，1984-3-4，汉族，山东";
+  N=str1.indexOf ("，");
+  // N=4，第一个"，"出现的位置
+  str2=str1.left(N);
+  //str2="学生姓名"
+  N=str1.lastIndexOf ("，");
+  // N=18，最后一个逗号的位置
+  str2=str1.right(str1.size()-N-1); //str2="山东"，提取最后一个逗号之后的字符串
+  ```
+
+- **section()**
+
+  section()函数的原型为：
+
+  ```c++
+  QString section (const QString &sep, int start,int end = -1, SectionFlags flags = SectionDefault) const
+  ```
+
+  其功能是从字符串中提取以sep作为分隔符，从 start端到end端的字符串。
+
+  ```c++
+  QString str2, str1="学生姓名，男，1984-3-4，汉族，山东";
+  str2=str1. section ("，",0,0);
+  // str2="学生姓名"， 第1段的编号为0
+  str2=str1. section ("，",1,1);
+  // str2="男"
+  str2=str1. section ("，",0,1);
+  // str2="学生姓名，男"
+  str2=str1. section ("，",4,4);
+  // str2="山东"
+  ```
+
+
+
+## 4.2 SpinBox的使用
+
+QSpinBox用于整数的显示和输入，一般显示十进制 数，也可以显示二进制、十六进制的数，而且可以在显示框中增加前缀或后缀。
+
+QDoubleSpinBox用于浮点数的显示和输入，可以设 置显示小数位数，也可以设置显示的前缀和后缀。
+
+<img src="./image/QT/image-20240703143221948.png" alt="image-20240703143221948" style="zoom:150%;" />
+
+QSpinBox和QDoubleSpinBox的主要属性
+
+<img src="./image/QT/image-20240703143245825.png" alt="image-20240703143245825" style="zoom:80%;" />
+
+<img src="./image/QT/image-20240703143305302.png" alt="image-20240703143305302" style="zoom:80%;" />
+
+提示 一个属性在类的接口中一般有一个读取函数 和一个设置函数，如QDoubleSpinBox的decimals 属性，
+
+读取属性值的函数为int decimals()，设置属性值的函数为void setDecimals(int prec)。
