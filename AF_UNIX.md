@@ -24,6 +24,7 @@ linux本地进程间通讯，大概有如下几种方式，[socket](https://so.c
 ## 2. AF_UNIX域socket通信过程
 
 典型的本地IPC，类似于管道，依赖路径名标识发送方和接收方。即发送数据时，指定接收方绑定的路径名，操作系统根据该路径名可以直接找到对应的接收方，并将原始数据直接拷贝到接收方的内核缓冲区中，并上报给接收方进程进行处理。同样的接收方可以从收到的数据包中获取到发送方的路径名，并通过此路径名向其发送数据。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190618193435181.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21heXVlX3dlYg==,size_16,color_FFFFFF,t_70)
 
 ## 3. 相同点
@@ -52,7 +53,7 @@ AF_UNIX由于其对系统cpu的较少消耗，不受限于网卡带宽，及高�
 
 上文参考:
 
-[https://blog.csdn.net/mayue_web/article/details/92798529]()
+[AF_UNIX 本地通信_af unix-CSDN博客](https://blog.csdn.net/mayue_web/article/details/92798529)
 
 ## 6.AF_UNIX编程示例（C语言）
 
