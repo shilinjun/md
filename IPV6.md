@@ -585,7 +585,7 @@ int CHttpSession::connectServer(char* pHost, int port, int timeOut)
 
 `ip -6 route show default`
 
-<img src="./../../AppData/Roaming/Typora/typora-user-images/image-20240515180124652.png" alt="image-20240515180124652" style="zoom:50%;" />
+<img src="./image/IPV6/image-20240515180124652.png" alt="image-20240515180124652" style="zoom:50%;" />
 
 删除默认网关
 

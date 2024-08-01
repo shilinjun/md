@@ -15,6 +15,7 @@ linux本地进程间通讯，大概有如下几种方式，[socket](https://so.c
 ## 1. AF_INET域socket通信过程
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190618193009252.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21heXVlX3dlYg==,size_16,color_FFFFFF,t_70)
+
 典型的TCP/IP四层模型的通信过程。
 
 发送方、接收方依赖IP:Port来标识，即将本地的socket绑定到对应的IP端口上，发送数据时，指定对方的IP端口，经过Internet，可以根据此IP端口最终找到接收方；接收数据时，可以从数据包中获取到发送方的IP端口。
