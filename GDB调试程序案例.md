@@ -58,7 +58,10 @@ GDB不仅可以拿来**解析**coredump文件，触发方式如下：
 
 ![image-20241009165407603](./image/GDB调试程序案例/image-20241009165407603.png)
 
-<img src="./image/GDB调试程序案例/image-20241009162105079.png" alt="image-20241009162105079" style="zoom: 44%;" />
+```shell
+#start.sh中启动可执行文件的语句
+./keyboard&
+```
 
 所以我们需要将./keyboard& 注释掉，这样设备开机后就不会运行可执行文件keyboard
 
@@ -123,3 +126,48 @@ enable 1
 上面bt可以看到最终崩溃在uiApp.cpp的第8310行，切换到这一帧，打印p的值，可以发现是一个空指针。
 
 这样也就能在不生成coredump的情况下查看崩溃时的堆栈信息了。
+
+
+
+## 5、其他gdb调试命令
+
+
+
+| 命令                                 | 作用                                                         |
+| :----------------------------------- | :----------------------------------------------------------- |
+| shell/exit                           | 在GDB与控制台间切换前后台                                    |
+| gcore                                | 手动生成coredump文件                                         |
+| gdb  <program> [core dump]           | 启动GDB（以及加载core dump）                                 |
+| gdb  attach pid                      | 启动GDB并加载进程<pid>                                       |
+| run (r)                              | 开始执行加载的程序                                           |
+| detach                               | 取消与加载程序的连接                                         |
+| x /nfu addr                          | 查看某个地址的值   n表示查看内存地址数量,默认为1,如果为负数,则查看前面地址的值   f表示显示格式,默认为x(16进制),支持的格式跟print一致   u表示单元大小,默认为w(4字节),可设置b(1字节) h(2字节) g(8字节) |
+| Ctrl+d/quit(q)                       | 退出GDB调试                                                  |
+| bt                                   | 查看当前线程的调用栈                                         |
+| bt full                              | 查看详细的调用栈                                             |
+| info threads                         | 查看所有线程的信息                                           |
+| thread <num>                         | 跳转到某个线程                                               |
+| frame <num>                          | 跳转到某个栈帧中位置                                         |
+| set scheduler-locking  off\|on\|step | 单步调试时，其他线程是否执行。                               |
+| c(ontinue)                           | 继续运行程序直到下一个断点                                   |
+| n(ext)                               | 逐过程步进，不会进入子函数                                   |
+| s(etp)                               | 逐语句步进，会进入子函数                                     |
+| u(ntil)                              | 运行至当前语句块结束                                         |
+| f(inish)                             | 运行至函数结束并跳出，并打印函数的返回值                     |
+| return                               | 结束当前调用函数并返回指定值，到上一层函数调用处             |
+| j(ump)                               | 将当前程序执行流跳转到指定行或地址                           |
+| p(print) <what>                      | 打印变量或寄存器值                                           |
+| display <what>                       | genzong查看变量或内存，每次中断后自动显示                    |
+| b(reak) <where>                      | 添加断点                                                     |
+| del(ete) <breakpoint#>               | 删除断点                                                     |
+| enable <breakpoint#>                 | 启用某个断点                                                 |
+| disable <breakpoint#>                | 禁用某个断点                                                 |
+| watch <where>                        | genzong某个变量或内存地址值是否变化                          |
+| l(ist)                               | 显示源码                                                     |
+| dis(assemble)                        | 查看汇编代码                                                 |
+| set solib-search-path + 库路径       | 在指定路径下搜索并关联库的符号表                             |
+| i(nfo) display                       | 查看所有display信息                                          |
+| i(nfo) sharedlibrary                 | 查看库的符号表链接情况                                       |
+| i(nfo) r(egister)                    | 查看当前调用栈的寄存器值                                     |
+| i(nfo) locals                        | 查看当前调用栈的所有变量                                     |
+| i(nfo) breakpoints                   | 查看所有断点信息                                             |
